@@ -10,37 +10,26 @@ class MainScreenProvider extends ChangeNotifier{
   navigateToScreen(String screenName) {
     switch (screenName) {
       case 'Dashboard':
-        // selectedScreen = DashboardScreen();
-        break; // Break statement needed here
+        break; 
       case 'Category':
-        // selectedScreen = CategoryScreen();
         break;
       case 'SubCategory':
-        // selectedScreen = SubCategoryScreen();
         break;
       case 'Brands':
-        // selectedScreen = BrandScreen();
         break;
       case 'VariantType':
-        // selectedScreen = VariantsTypeScreen();
         break;
       case 'Variants':
-        // selectedScreen = VariantsScreen();
         break;
       case 'Coupon':
-        // selectedScreen = CouponCodeScreen();
         break;
       case 'Poster':
-        // selectedScreen = PosterScreen();
         break;
       case 'Order':
-        // selectedScreen = OrderScreen();
         break;
       case 'Notifications':
-        // selectedScreen = NotificationScreen();
         break;
       default:
-        // selectedScreen = DashboardScreen();
     }
     notifyListeners();
   }
