@@ -1,6 +1,8 @@
 import 'package:admin_panel/core/routes/app_pages.dart';
+import 'package:admin_panel/screens/category/provider/category_provider.dart';
 import 'package:admin_panel/screens/main/main_screen.dart';
 import 'package:admin_panel/utility/constants.dart';
+import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +15,7 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => DataProvider()),
     ChangeNotifierProvider(create: (context) => MainScreenProvider()),
+    ChangeNotifierProvider(create: (context) => CategoryProvider(context.dataProvider)),
   ], child: MyApp()));
 }
 
