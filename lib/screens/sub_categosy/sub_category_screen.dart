@@ -1,14 +1,12 @@
-import 'package:admin_panel/screens/category/components/category_list_section.dart';
+import 'package:admin_panel/screens/sub_categosy/component/show_sub_category_form.dart';
+import 'package:admin_panel/screens/sub_categosy/component/sub_category_header.dart';
+import 'package:admin_panel/screens/sub_categosy/component/sub_category_list_section.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
-import 'components/add_category_form.dart';
-import 'components/category_header.dart';
 
-class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
-
+class SubCategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -17,8 +15,8 @@ class CategoryScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            CategoryHeader(),
-            SizedBox(height: defaultPadding),
+            SubCategoryHeader(),
+            Gap(defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -27,11 +25,11 @@ class CategoryScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: Text(
-                              "My Categories",
+                              "My Sub Categories",
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
@@ -43,7 +41,7 @@ class CategoryScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              showAddCategoryForm(context, null);
+                              showAddSubCategoryForm(context, null);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Add New"),
@@ -51,14 +49,16 @@ class CategoryScreen extends StatelessWidget {
                           Gap(20),
                           IconButton(
                             onPressed: () {
-                              context.dataProvider.getAllCategory(showSnack: true);
+                              context.dataProvider.getAllSubCategories(
+                                showSnack: true,
+                              );
                             },
                             icon: Icon(Icons.refresh),
                           ),
                         ],
                       ),
                       Gap(defaultPadding),
-                      CategoryListSection(),
+                      SubCategoryListSection(),
                     ],
                   ),
                 ),

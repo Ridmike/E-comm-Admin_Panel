@@ -1,4 +1,5 @@
 import 'package:admin_panel/screens/category/category_screen.dart';
+import 'package:admin_panel/screens/sub_categosy/sub_category_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,7 @@ class MainScreenProvider extends ChangeNotifier {
         selectedScreen = CategoryScreen();
         break;
       case 'SubCategory':
+        selectedScreen = SubCategoryScreen();
         break;
       case 'Brands':
         break;

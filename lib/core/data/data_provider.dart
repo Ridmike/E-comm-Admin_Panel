@@ -1,5 +1,6 @@
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/models/category.dart';
+import 'package:admin_panel/models/sub_category.dart';
 import 'package:admin_panel/services/http_service.dart';
 import 'package:admin_panel/utility/snack_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +14,13 @@ class DataProvider extends ChangeNotifier {
   List<Category> _filteredCategories = [];
   List<Category> get categories => _filteredCategories;
 
+  List<SubCategory> _allSubCategories = [];
+  List<SubCategory> _filteredSubCategories = [];
+  List<SubCategory> get subCategories => _filteredSubCategories;
+
   DataProvider() {
     getAllCategory();
+    getAllSubCategories();
   }
 
   // Get All Categories
@@ -53,4 +59,47 @@ class DataProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  // Get All Sub Categories
+  Future<List<SubCategory>> getAllSubCategories({
+    bool showSnack = false,
+  }) async {
+    try {
+      Response response = await service.getItems(endpointUrl: "subCategories");
+      if (response.isOk) {
+        ApiResponse<List<SubCategory>> apiResponse =
+            ApiResponse<List<SubCategory>>.fromJson(
+              response.body,
+              (json) => (json as List)
+                  .map((item) => SubCategory.fromJson(item))
+                  .toList(),
+            );
+        _allSubCategories = apiResponse.data ?? [];
+        _filteredSubCategories = List.from(_allSubCategories);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredSubCategories;
+  }
+
+  // Filter Sub Categories
+  void filterSubCategories(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredSubCategories = List.from(_allSubCategories);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredSubCategories = _allSubCategories.where((subCategory) {
+        return (subCategory.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  
+
+
 }

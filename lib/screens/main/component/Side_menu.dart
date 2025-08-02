@@ -1,3 +1,4 @@
+import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -23,14 +24,14 @@ class SideMenu extends StatelessWidget {
             title: "Category",
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Category');
+              context.mainScreenProvider.navigateToScreen('Category');
             },
           ),
           DrawerListTile(
             title: "Sub Category",
             svgSrc: "assets/icons/menu_task.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('SubCategory');
+              context.mainScreenProvider.navigateToScreen('SubCategory');
             },
           ),
           DrawerListTile(

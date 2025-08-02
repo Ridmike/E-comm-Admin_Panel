@@ -55,10 +55,10 @@ class CategoryProvider extends ChangeNotifier {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
           clearFields();
-          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          SnackBarHelper.showSuccessSnackBar(' ${apiResponse.message}');
           _dataProvider.getAllCategory();
         } else {
-          SnackBarHelper.showErrorSnackBar('${apiResponse.message}');
+          SnackBarHelper.showErrorSnackBar(' ${apiResponse.message}');
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
@@ -94,10 +94,10 @@ class CategoryProvider extends ChangeNotifier {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
           clearFields();
-          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          SnackBarHelper.showSuccessSnackBar(' ${apiResponse.message}');
           _dataProvider.getAllCategory();
         } else {
-          SnackBarHelper.showErrorSnackBar('${apiResponse.message}');
+          SnackBarHelper.showErrorSnackBar(' ${apiResponse.message}');
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
