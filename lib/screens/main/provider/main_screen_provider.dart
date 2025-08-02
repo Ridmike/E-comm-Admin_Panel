@@ -1,17 +1,16 @@
+import 'package:admin_panel/screens/category/category_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-class MainScreenProvider extends ChangeNotifier{
-  Widget selectedScreen = Placeholder(); // Default screen, can be replaced with an actual screen widget
-
-
+class MainScreenProvider extends ChangeNotifier {
+  Widget selectedScreen = CategoryScreen();
 
   navigateToScreen(String screenName) {
     switch (screenName) {
       case 'Dashboard':
-        break; 
+        break;
       case 'Category':
+        selectedScreen = CategoryScreen();
         break;
       case 'SubCategory':
         break;
@@ -33,6 +32,4 @@ class MainScreenProvider extends ChangeNotifier{
     }
     notifyListeners();
   }
-  
-  
 }

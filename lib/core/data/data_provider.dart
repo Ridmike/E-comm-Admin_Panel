@@ -13,7 +13,9 @@ class DataProvider extends ChangeNotifier {
   List<Category> _filteredCategories = [];
   List<Category> get categories => _filteredCategories;
 
-  DataProvider() {}
+  DataProvider() {
+    getAllCategory();
+  }
 
   // Get All Categories
   Future<List<Category>> getAllCategory({bool showSnack = false}) async {
@@ -41,15 +43,14 @@ class DataProvider extends ChangeNotifier {
 
   // Filter Categories
   void filterCategories(String keyword) {
-  if (keyword.isEmpty) {
-    _filteredCategories = List.from(_allCategories);
-  } else {
-    final lowerKeyword = keyword.toLowerCase();
-    _filteredCategories = _allCategories.where((category) {
-      return (category.name ?? '').toLowerCase().contains(lowerKeyword);
-    }).toList();
-  }
-  notifyListeners();
+    if (keyword.isEmpty) {
+      _filteredCategories = List.from(_allCategories);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredCategories = _allCategories.where((category) {
+        return (category.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
   }
 }
-

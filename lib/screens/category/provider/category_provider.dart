@@ -21,6 +21,15 @@ class CategoryProvider extends ChangeNotifier {
 
   CategoryProvider(this._dataProvider);
 
+  // Submit Button Action
+  submitCategory() {
+    if (categoryForUpdate != null) {
+      updateCategory();
+    } else {
+      addCategory();
+    }
+  }
+
   // Add Category
   addCategory() async {
     try {
@@ -47,6 +56,7 @@ class CategoryProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          _dataProvider.getAllCategory();
         } else {
           SnackBarHelper.showErrorSnackBar('${apiResponse.message}');
         }
@@ -56,7 +66,68 @@ class CategoryProvider extends ChangeNotifier {
         );
       }
     } catch (e) {
-      print(e);
+      SnackBarHelper.showErrorSnackBar('Error: $e');
+      rethrow;
+    }
+  }
+
+  // Update Category
+  updateCategory() async {
+    try {
+      Map<String, dynamic> formDataMap = {
+        'name': categoryNameCtrl.text,
+        'image': categoryForUpdate?.image ?? '',
+      };
+
+      final FormData form = await createFormData(
+        imgXFile: imgXFile,
+        formData: formDataMap,
+      );
+
+      final response = await service.updateItem(
+        endpointUrl: 'categories',
+        itemData: form,
+        itemId: categoryForUpdate?.sId ?? '',
+      );
+
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          clearFields();
+          SnackBarHelper.showSuccessSnackBar('${apiResponse.message}');
+          _dataProvider.getAllCategory();
+        } else {
+          SnackBarHelper.showErrorSnackBar('${apiResponse.message}');
+        }
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+          'Error: ${response.body?['message'] ?? response.statusText}',
+        );
+      }
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar('Error: $e');
+      rethrow;
+    }
+  }
+
+  // Delete Category
+  deleteCategory(Category category) async {
+    try {
+      Response response = await service.deleteItem(
+        endpointUrl: 'categories',
+        itemId: category.sId ?? '',
+      );
+
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          SnackBarHelper.showSuccessSnackBar('Category Deleted Successfully');
+          _dataProvider.getAllCategory();
+        } 
+      } else {
+        SnackBarHelper.showErrorSnackBar('Error ${response.body?['message'] ?? response.statusText}');
+      }
+    } catch (e) {
       SnackBarHelper.showErrorSnackBar('Error: $e');
       rethrow;
     }

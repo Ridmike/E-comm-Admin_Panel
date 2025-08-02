@@ -1,5 +1,9 @@
+import 'package:admin_panel/screens/category/components/category_list_section.dart';
+import 'package:admin_panel/screens/category/provider/category_provider.dart';
+import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
 import '../../utility/constants.dart';
 import 'components/add_category_form.dart';
 import 'components/category_header.dart';
@@ -28,11 +32,7 @@ class CategoryScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "My Categories",
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                           ElevatedButton.icon(
@@ -50,19 +50,20 @@ class CategoryScreen extends StatelessWidget {
                           ),
                           Gap(20),
                           IconButton(
-                              onPressed: () {
-                                //TODO: should complete getAllCategory
-                              },
-                              icon: Icon(Icons.refresh)),
+                            onPressed: () {
+                              context.dataProvider.getAllCategory(showSnack: true);
+                            },
+                            icon: Icon(Icons.refresh),
+                          ),
                         ],
                       ),
                       Gap(defaultPadding),
-                      // CategoryListSection(),
+                      CategoryListSection(),
                     ],
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
