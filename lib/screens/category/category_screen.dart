@@ -1,11 +1,10 @@
-import 'package:admin_panel/utility/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import '../../utility/constants.dart';
+import 'components/add_category_form.dart';
+import 'components/category_header.dart';
 
 class CategoryScreen extends StatelessWidget {
-  const CategoryScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -14,7 +13,7 @@ class CategoryScreen extends StatelessWidget {
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            // Category Header
+            CategoryHeader(),
             SizedBox(height: defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +28,11 @@ class CategoryScreen extends StatelessWidget {
                           Expanded(
                             child: Text(
                               "My Categories",
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                           ElevatedButton.icon(
@@ -40,24 +43,26 @@ class CategoryScreen extends StatelessWidget {
                               ),
                             ),
                             onPressed: () {
-                              // showAdddCategoryForm(context, null);
+                              showAddCategoryForm(context, null);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Add New"),
                           ),
                           Gap(20),
-                          IconButton(onPressed: () {
-                            // get all categories
-                          }, icon: Icon(Icons.refresh)),
+                          IconButton(
+                              onPressed: () {
+                                //TODO: should complete getAllCategory
+                              },
+                              icon: Icon(Icons.refresh)),
                         ],
                       ),
                       Gap(defaultPadding),
-                      // CategoryListSection()
+                      // CategoryListSection(),
                     ],
                   ),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),
