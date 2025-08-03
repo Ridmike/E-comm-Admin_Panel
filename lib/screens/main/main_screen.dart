@@ -1,10 +1,12 @@
-import 'package:admin_panel/screens/main/component/Side_menu.dart';
+import 'package:admin_panel/screens/main/component/side_menu.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'provider/main_screen_provider.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     context.dataProvider;

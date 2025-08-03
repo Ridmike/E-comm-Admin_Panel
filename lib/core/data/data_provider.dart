@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:admin_panel/models/api_response.dart';
+import 'package:admin_panel/models/brand.dart';
 import 'package:admin_panel/models/category.dart';
 import 'package:admin_panel/models/sub_category.dart';
 import 'package:admin_panel/services/http_service.dart';
@@ -18,9 +21,14 @@ class DataProvider extends ChangeNotifier {
   List<SubCategory> _filteredSubCategories = [];
   List<SubCategory> get subCategories => _filteredSubCategories;
 
+  List<Brand> _allBrands = [];
+  List<Brand> _filteredBrands = [];
+  List<Brand> get brands => _filteredBrands;
+
   DataProvider() {
     getAllCategory();
     getAllSubCategories();
+    getAllBrand();
   }
 
   // Get All Categories
@@ -99,7 +107,41 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+  // Get All Brands
+  Future<List<Brand>> getAllBrand({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: "brands");
+      if (response.isOk) {
+        ApiResponse<List<Brand>> apiResponse =
+            ApiResponse<List<Brand>>.fromJson(
+              response.body,
+              (json) =>
+                  (json as List).map((item) => Brand.fromJson(item)).toList(),
+            );
+        _allBrands = apiResponse.data ?? [];
+        _filteredBrands = List.from(_allBrands);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredBrands;
+  }
 
+  // Filter All Brands
+  void filterBrands(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredBrands = List.from(_allBrands);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredBrands = _allBrands.where((category) {
+        return (category.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
 
+  //
 }

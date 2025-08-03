@@ -17,7 +17,7 @@ class SideMenu extends StatelessWidget {
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Dashboard');
+              context.mainScreenProvider.navigateToScreen('Dashboard');
             },
           ),
           DrawerListTile(
@@ -38,49 +38,49 @@ class SideMenu extends StatelessWidget {
             title: "Brands",
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Brands');
+              context.mainScreenProvider.navigateToScreen('Brands');
             },
           ),
           DrawerListTile(
             title: "Variant Type",
             svgSrc: "assets/icons/menu_store.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('VariantType');
+              context.mainScreenProvider.navigateToScreen('VariantType');
             },
           ),
           DrawerListTile(
             title: "Variants",
             svgSrc: "assets/icons/menu_notification.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Variants');
+              context.mainScreenProvider.navigateToScreen('Variants');
             },
           ),
           DrawerListTile(
             title: "Orders",
             svgSrc: "assets/icons/menu_profile.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Order');
+              context.mainScreenProvider.navigateToScreen('Order');
             },
           ),
           DrawerListTile(
             title: "Coupons",
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Coupon');
+              context.mainScreenProvider.navigateToScreen('Coupon');
             },
           ),
           DrawerListTile(
             title: "Posters",
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Poster');
+              context.mainScreenProvider.navigateToScreen('Poster');
             },
           ),
           DrawerListTile(
             title: "Notifications",
             svgSrc: "assets/icons/menu_notification.svg",
             press: () {
-              // context.mainScreenProvider.navigateToScreen('Notifications');
+              context.mainScreenProvider.navigateToScreen('Notifications');
             },
           ),
         ],
