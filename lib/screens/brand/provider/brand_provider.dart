@@ -1,6 +1,5 @@
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/utility/snack_bar.dart';
-
 import '../../../models/brand.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -24,10 +23,10 @@ class BrandProvider extends ChangeNotifier {
     try {
       Map<String, dynamic> brand = {
         'name': brandNameCtrl.text,
-        'subCategoryId': selectedSubCategory?.sId,
+        'subcategoryId': selectedSubCategory?.sId,
       };
       final response = await service.addItem(
-        endpointUrl: "brands",
+        endpointUrl: 'brands',
         itemData: brand,
       );
       if (response.isOk) {
@@ -38,16 +37,17 @@ class BrandProvider extends ChangeNotifier {
           _dataProvider.getAllBrand();
         } else {
           SnackBarHelper.showErrorSnackBar(
-            'Faild to added SubCategory: ${apiResponse.message}',
+            'Faild to added Brand: ${apiResponse.message}',
           );
         }
       } else {
         SnackBarHelper.showErrorSnackBar(
-          'Error: ${response.body?['message'] ?? 'Unknown error'}',
+          'Error: ${response.body?['message'] ?? response.statusText}',
         );
       }
     } catch (e) {
       SnackBarHelper.showErrorSnackBar('An Error Occurred: $e');
+      rethrow;
     }
   }
 
@@ -58,11 +58,11 @@ class BrandProvider extends ChangeNotifier {
       if (brandForUpdate != null) {
         Map<String, dynamic> brand = {
           'name': brandNameCtrl.text,
-          'subCategoryId': selectedSubCategory?.sId,
+          'subcategoryId': selectedSubCategory?.sId,
         };
         final response = await service.updateItem(
           endpointUrl: "brands",
-          itemId: brandForUpdate!.sId ?? '',
+          itemId: brandForUpdate?.sId ?? '',
           itemData: brand,
         );
         if (response.isOk) {
@@ -73,21 +73,18 @@ class BrandProvider extends ChangeNotifier {
             _dataProvider.getAllBrand();
           } else {
             SnackBarHelper.showErrorSnackBar(
-              'Failed to update SubCategory: ${apiResponse.message}',
+              'Failed to update Brand: ${apiResponse.message}',
             );
           }
         } else {
           SnackBarHelper.showErrorSnackBar(
-            'Error: ${response.body?['message'] ?? 'Unknown error'}',
+            'Error: ${response.body?['message'] ?? response.statusText}',
           );
         }
-      } else {
-        SnackBarHelper.showErrorSnackBar(
-          'Error ${brandForUpdate?.name ?? ''} not found',
-        );
       }
     } catch (e) {
       SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      rethrow;
     }
   }
 
@@ -110,9 +107,7 @@ class BrandProvider extends ChangeNotifier {
       if (response.isOk) {
         ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
         if (apiResponse.success == true) {
-          SnackBarHelper.showSuccessSnackBar(
-            'Brand Delete Successfully',
-          );
+          SnackBarHelper.showSuccessSnackBar('Brand Delete Successfully');
           _dataProvider.getAllBrand();
         }
       } else {

@@ -1,6 +1,7 @@
 import '../../../models/sub_category.dart';
 import '../provider/brand_provider.dart';
 import '../../../utility/extensions.dart';
+import '../../../core/data/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -116,20 +117,27 @@ class BrandSubmitForm extends StatelessWidget {
   }
 }
 
-// How to show the category popup
+// How to show the brand popup
 void showBrandForm(BuildContext context, Brand? brand) {
+  final dataProvider = Provider.of<DataProvider>(context, listen: false);
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: bgColor,
-        title: Center(
-          child: Text(
-            'Add Brand'.toUpperCase(),
-            style: TextStyle(color: primaryColor),
+      return ChangeNotifierProvider(
+        create: (context) => BrandProvider(dataProvider),
+        child: AlertDialog(
+          backgroundColor: bgColor,
+          title: Center(
+            child: Text(
+              brand == null
+                  ? 'Add Brand'.toUpperCase()
+                  : 'Update Brand'.toUpperCase(),
+              style: TextStyle(color: primaryColor),
+            ),
           ),
+          content: BrandSubmitForm(brand: brand),
         ),
-        content: BrandSubmitForm(brand: brand),
       );
     },
   );
