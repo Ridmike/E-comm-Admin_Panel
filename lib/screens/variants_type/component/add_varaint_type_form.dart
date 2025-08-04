@@ -1,9 +1,11 @@
 import 'package:admin_panel/utility/extensions.dart';
-
+import '../../../core/data/data_provider.dart';
 import '../../../models/variant_type.dart';
 import 'package:flutter/material.dart';
 import '../../../utility/constants.dart';
 import '../../../widgets/custom_text_field.dart';
+import 'package:provider/provider.dart';
+import '../provider/variants_type_provider.dart';
 
 class VariantTypeSubmitForm extends StatelessWidget {
   final VariantType? variantType;
@@ -111,15 +113,20 @@ void showAddVariantsTypeForm(BuildContext context, VariantType? variantType) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: bgColor,
-        title: Center(
-          child: Text(
-            'Add Variant Type'.toUpperCase(),
-            style: TextStyle(color: primaryColor),
-          ),
+      return ChangeNotifierProvider(
+        create: (_) => VariantsTypeProvider(
+          Provider.of<DataProvider>(context, listen: false),
         ),
-        content: VariantTypeSubmitForm(variantType: variantType),
+        child: AlertDialog(
+          backgroundColor: bgColor,
+          title: Center(
+            child: Text(
+              'Add Variant Type'.toUpperCase(),
+              style: TextStyle(color: primaryColor),
+            ),
+          ),
+          content: VariantTypeSubmitForm(variantType: variantType),
+        ),
       );
     },
   );
