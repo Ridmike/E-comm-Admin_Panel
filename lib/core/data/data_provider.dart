@@ -3,7 +3,14 @@ import 'dart:convert';
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/models/brand.dart';
 import 'package:admin_panel/models/category.dart';
+import 'package:admin_panel/models/coupon.dart';
+import 'package:admin_panel/models/my_notification.dart';
+import 'package:admin_panel/models/order.dart';
+import 'package:admin_panel/models/poster.dart';
+import 'package:admin_panel/models/product.dart';
 import 'package:admin_panel/models/sub_category.dart';
+import 'package:admin_panel/models/variant.dart';
+import 'package:admin_panel/models/variant_type.dart';
 import 'package:admin_panel/services/http_service.dart';
 import 'package:admin_panel/utility/snack_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,10 +32,39 @@ class DataProvider extends ChangeNotifier {
   List<Brand> _filteredBrands = [];
   List<Brand> get brands => _filteredBrands;
 
+  List<VariantType> _allVariantTypes = [];
+  List<VariantType> _filteredVariantTypes = [];
+  List<VariantType> get variantTypes => _filteredVariantTypes;
+
+  List<Variant> _allVariants = [];
+  List<Variant> _filteredVariants = [];
+  List<Variant> get variants => _filteredVariants;
+
+  List<Product> _allProducts = [];
+  List<Product> _filteredProducts = [];
+  List<Product> get products => _filteredProducts;
+
+  List<Coupon> _allCoupons = [];
+  List<Coupon> _filteredCoupons = [];
+  List<Coupon> get coupons => _filteredCoupons;
+
+  List<Poster> _allPosters = [];
+  List<Poster> _filteredPosters = [];
+  List<Poster> get posters => _filteredPosters;
+
+  List<Order> _allOrders = [];
+  List<Order> _filteredOrders = [];
+  List<Order> get orders => _filteredOrders;
+
+  List<MyNotification> _allNotifications = [];
+  List<MyNotification> _filteredNotifications = [];
+  List<MyNotification> get notifications => _filteredNotifications;
+
   DataProvider() {
     getAllCategory();
     getAllSubCategories();
     getAllBrand();
+    getAllVariantTypes();
   }
 
   // Get All Categories
@@ -143,5 +179,43 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //
+  // Get All Vatiant Types
+  Future<List<VariantType>> getAllVariantTypes({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: "variantTypes");
+      if (response.isOk) {
+        ApiResponse<List<VariantType>> apiResponse = ApiResponse.fromJson(
+          response.body,
+          (json) =>
+              (json as List).map((item) => VariantType.fromJson(item)).toList(),
+        );
+        _allVariantTypes = apiResponse.data ?? [];
+        _filteredVariantTypes = List.from(_allVariantTypes);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+        return _filteredVariantTypes;
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredVariantTypes;
+  }
+
+  // Filter Variant Types
+  void filterVariantTypes(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredVariantTypes = List.from(_allVariantTypes);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredVariantTypes = _allVariantTypes.where((variantTypes) {
+        return (variantTypes.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  // Get All Variants
+
+  // Filter All Variants
 }
