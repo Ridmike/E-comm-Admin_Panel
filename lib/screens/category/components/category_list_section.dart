@@ -1,5 +1,4 @@
 import 'package:admin_panel/utility/extensions.dart';
-
 import '../../../core/data/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
