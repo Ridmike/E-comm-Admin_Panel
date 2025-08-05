@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/models/brand.dart';
 import 'package:admin_panel/models/category.dart';
@@ -63,6 +65,7 @@ class DataProvider extends ChangeNotifier {
     getAllSubCategories();
     getAllBrand();
     getAllVariantTypes();
+    getAllVariants();
   }
 
   // Get All Categories
@@ -214,7 +217,42 @@ class DataProvider extends ChangeNotifier {
   }
 
   // Get All Variants
-
+  Future<List<Variant>> getAllVariants({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'variants');
+      if (response.isOk) {
+        ApiResponse<List<Variant>> apiResponse =
+            ApiResponse<List<Variant>>.fromJson(
+              response.body,
+              (json) =>
+                  (json as List).map((item) => Variant.fromJson(item)).toList(),
+            );
+        _allVariants = apiResponse.data ?? [];
+        _filteredVariants = List.from(_allVariants);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showErrorSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredVariants;
+  }
 
   // Filter All Variants
+  void filterVariants(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredVariants = List.from(_allVariants);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredVariants = _allVariants.where((variant) {
+        return (variant.name ?? '').toLowerCase().contains(lowerKeyword);
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  // Get All
+
+  // Filter
 }
