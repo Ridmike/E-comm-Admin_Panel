@@ -5,6 +5,9 @@ import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
+import 'package:provider/provider.dart';
+import '../../core/data/data_provider.dart';
+import './provider/variants_provider.dart';
 
 class VariantsScreen extends StatelessWidget {
   @override
@@ -49,14 +52,21 @@ class VariantsScreen extends StatelessWidget {
                           Gap(20),
                           IconButton(
                             onPressed: () {
-                              context.dataProvider.getAllVariants(showSnack: true);
+                              context.dataProvider.getAllVariants(
+                                showSnack: true,
+                              );
                             },
                             icon: Icon(Icons.refresh),
                           ),
                         ],
                       ),
                       Gap(defaultPadding),
-                      VariantsListSection(),
+                      ChangeNotifierProvider(
+                        create: (_) => VariantsProvider(
+                          Provider.of<DataProvider>(context, listen: false),
+                        ),
+                        child: VariantsListSection(),
+                      ),
                     ],
                   ),
                 ),

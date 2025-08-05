@@ -230,7 +230,7 @@ class DataProvider extends ChangeNotifier {
         _allVariants = apiResponse.data ?? [];
         _filteredVariants = List.from(_allVariants);
         notifyListeners();
-        if (showSnack) SnackBarHelper.showErrorSnackBar(apiResponse.message);
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
       }
     } catch (e) {
       if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());

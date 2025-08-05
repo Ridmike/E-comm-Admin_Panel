@@ -56,7 +56,7 @@ class VariantsProvider extends ChangeNotifier {
       if (variantForUpdate != null) {
         Map<String, dynamic> variant = {
           'name': variantCtrl.text,
-          'categoryId': selectedVariantType?.sId,
+          'variantTypeId': selectedVariantType?.sId,
         };
         final response = await service.updateItem(
           endpointUrl: "variants",
@@ -91,6 +91,16 @@ class VariantsProvider extends ChangeNotifier {
 
   // Submit Button Action
   submitVariant() {
+    // Validate required fields
+    if (variantCtrl.text.trim().isEmpty) {
+      SnackBarHelper.showErrorSnackBar('Variant name is required');
+      return;
+    }
+    if (selectedVariantType == null) {
+      SnackBarHelper.showErrorSnackBar('Please select a variant type');
+      return;
+    }
+
     if (variantForUpdate != null) {
       updateVariant();
     } else {
