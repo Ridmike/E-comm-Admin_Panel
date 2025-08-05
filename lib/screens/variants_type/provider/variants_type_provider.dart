@@ -99,7 +99,7 @@ class VariantsTypeProvider extends ChangeNotifier {
   deleteVariantTypes(VariantType variantType) async {
     try {
       Response response = await service.deleteItem(
-        endpointUrl: 'variantType',
+        endpointUrl: 'variantTypes',
         itemId: variantType.sId ?? '',
       );
       if (response.isOk) {
