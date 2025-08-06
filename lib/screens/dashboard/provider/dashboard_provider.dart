@@ -93,6 +93,7 @@ class DashBoardProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           clearFields();
           SnackBarHelper.showSuccessSnackBar(' ${apiResponse.message}');
+          _dataProvider.getAllProduct();
         } else {
           SnackBarHelper.showErrorSnackBar(
             'Failed to add Product: ${apiResponse.message}',
@@ -109,10 +110,93 @@ class DashBoardProvider extends ChangeNotifier {
   }
 
   // UpdateProduct
+  updateProduct() async {
+    try {
+      Map<String, dynamic> formDataMap = {
+        'name': productNameCtrl.text,
+        'description': productDescCtrl.text,
+        'proCategoryId': selectedCategory?.sId ?? '',
+        'proSubCategoryId': selectedSubCategory?.sId ?? '',
+        'proBrandId': selectedBrand?.sId ?? '',
+        'price': productPriceCtrl.text,
+        'offerPrice': productOffPriceCtrl.text.isEmpty
+            ? productPriceCtrl.text
+            : productOffPriceCtrl.text,
+        'quantity': productQntCtrl.text,
+        'proVariantTypeId': selectedVariantType?.sId ?? '',
+        'proVariantId': selectedVariants,
+      };
 
-  //TODO: should complete submitProduct
+      final FormData form = await createFormDataForMultipleImage(
+        imgXFiles: [
+          {'image1': mainImgXFile},
+          {'image2': secondImgXFile},
+          {'image3': thirdImgXFile},
+          {'image4': fourthImgXFile},
+          {'image5': fifthImgXFile},
+        ],
+        formData: formDataMap,
+      );
+      if (productForUpdate != null) {}
+      final response = await service.updateItem(
+        endpointUrl: 'products',
+        itemId: '${productForUpdate?.sId}',
+        itemData: form,
+      );
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          clearFields();
+          SnackBarHelper.showSuccessSnackBar(' ${apiResponse.message}');
+          _dataProvider.getAllProduct();
+        } else {
+          SnackBarHelper.showErrorSnackBar(
+            'Failed to update Product: ${apiResponse.message}',
+          );
+        }
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+          'Error: ${response.body?['message'] ?? response.statusText}',
+        );
+      }
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      rethrow;
+    }
+  }
 
-  //TODO: should complete deleteProduct
+  // Submit Product
+  submitProduct() {
+    if (productForUpdate != null) {
+      updateProduct();
+    } else {
+      addProduct();
+    }
+  }
+
+  // Delete Product
+  deleteProduct(Product product) async {
+    try {
+      Response response = await service.deleteItem(
+        endpointUrl: 'products',
+        itemId: product.sId ?? '',
+      );
+      if (response.isOk) {
+        ApiResponse apiResponse = ApiResponse.fromJson(response.body, null);
+        if (apiResponse.success == true) {
+          SnackBarHelper.showSuccessSnackBar('Product Deleted Successfully');
+          _dataProvider.getAllProduct();
+        }
+      } else {
+        SnackBarHelper.showErrorSnackBar(
+          'Error: ${response.body?['message'] ?? response.statusText}',
+        );
+      }
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar('An error occurred: $e');
+      rethrow;
+    }
+  }
 
   void pickImage({required int imageCardNumber}) async {
     final ImagePicker picker = ImagePicker();
@@ -190,9 +274,9 @@ class DashBoardProvider extends ChangeNotifier {
     selectedBrand = null;
     selectedSubCategory = subCategory;
     brandsBySubCategory.clear();
-    final newList = _dataProvider.brands.where(
-      (brand) => brand.subcategoryId?.sId == subCategory.sId,
-    ).toList();
+    final newList = _dataProvider.brands
+        .where((brand) => brand.subcategoryId?.sId == subCategory.sId)
+        .toList();
     brandsBySubCategory = newList;
     notifyListeners();
   }
@@ -204,7 +288,9 @@ class DashBoardProvider extends ChangeNotifier {
     final newList = _dataProvider.variants
         .where((variant) => variant.variantTypeId?.sId == variantType.sId)
         .toList();
-    final List<String> variantNames = newList.map((variant) => variant.name ?? '').toList();
+    final List<String> variantNames = newList
+        .map((variant) => variant.name ?? '')
+        .toList();
     variantsByVariantType = variantNames;
     notifyListeners();
   }

@@ -133,14 +133,14 @@ class ProTypeRef {
 }
 
 class Images {
-  int? image;
+  String? image;  
   String? url;
   String? sId;
 
   Images({this.image, this.url, this.sId});
 
   Images.fromJson(Map<String, dynamic> json) {
-    image = json['image'];
+    image = json['image']?.toString(); 
     url = json['url'];
     sId = json['_id'];
   }

@@ -2,6 +2,7 @@ import 'package:admin_panel/screens/dashboard/components/dashboard_header.dart';
 import 'package:admin_panel/screens/dashboard/components/order_details.dart';
 import 'package:admin_panel/screens/dashboard/components/product_list.dart';
 import 'package:admin_panel/screens/dashboard/components/product_summary_section.dart';
+import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
@@ -49,10 +50,11 @@ class DashboardScreen extends StatelessWidget {
                           ),
                           Gap(20),
                           IconButton(
-                              onPressed: () {
-                                //TODO: should complete call getAllProduct
-                              },
-                              icon: Icon(Icons.refresh)),
+                            onPressed: () {
+                              context.dataProvider.getAllProduct(showSnack: true);
+                            },
+                            icon: Icon(Icons.refresh),
+                          ),
                         ],
                       ),
                       Gap(defaultPadding),
@@ -63,12 +65,9 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: defaultPadding),
-                Expanded(
-                  flex: 2,
-                  child: OrderDetailsSection(),
-                ),
+                Expanded(flex: 2, child: OrderDetailsSection()),
               ],
-            )
+            ),
           ],
         ),
       ),

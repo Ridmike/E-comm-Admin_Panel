@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/models/brand.dart';
 import 'package:admin_panel/models/category.dart';
@@ -61,6 +59,7 @@ class DataProvider extends ChangeNotifier {
   List<MyNotification> get notifications => _filteredNotifications;
 
   DataProvider() {
+    getAllProduct();
     getAllCategory();
     getAllSubCategories();
     getAllBrand();
@@ -252,7 +251,105 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Get All
+  // Get All Products
+  Future<List<Product>> getAllProduct({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'products');
+      if (response.isOk) {
+        ApiResponse<List<Product>> apiResponse =
+            ApiResponse<List<Product>>.fromJson(
+              response.body,
+              (json) =>
+                  (json as List).map((item) => Product.fromJson(item)).toList(),
+            );
+        _allProducts = apiResponse.data ?? [];
+        _filteredProducts = List.from(_allProducts);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      } else {
+        if (showSnack)
+          SnackBarHelper.showErrorSnackBar('Failed to fetch products');
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredProducts;
+  }
 
-  // Filter
+  // Filter Products
+  void filterProducts(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredProducts = List.from(_allProducts);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredProducts = _allProducts.where((product) {
+        final productNameContainsKeyword = (product.name ?? '')
+            .toLowerCase()
+            .contains(lowerKeyword);
+        final categoryNameContainsKeyword =
+            product.proSubCategoryId?.name?.toLowerCase().contains(
+              lowerKeyword,
+            ) ??
+            false;
+        final subCategoryNameContainsKeyword =
+            product.proSubCategoryId?.name?.toLowerCase().contains(
+              lowerKeyword,
+            ) ??
+            false;
+
+        return productNameContainsKeyword ||
+            categoryNameContainsKeyword ||
+            subCategoryNameContainsKeyword;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  // Get All Coupons
+
+  // Filter Product By the Quantity
+  void filterProductsByQuantity(String productQntType) {
+    if (productQntType == 'All Products') {
+      _filteredProducts = List.from(_allProducts);
+    } else if (productQntType == 'Out of Stock') {
+      _filteredProducts = _allProducts.where((product) {
+        // Filerting products that are out of stock
+        return product.quantity != null && product.quantity == 0;
+      }).toList();
+    } else if (productQntType == 'Limited Stock') {
+      _filteredProducts = _allProducts.where((product) {
+        // Filtering products that are in limited stock
+        return product.quantity != null && product.quantity == 1;
+      }).toList();
+    } else if (productQntType == 'Other Stock') {
+      _filteredProducts = _allProducts.where((product) {
+        // Filtering products that are in other stock
+        return product.quantity != null &&
+            product.quantity != 0 &&
+            product.quantity != 1;
+      }).toList();
+    } else {
+      _filteredProducts = List.from(_allProducts);
+    }
+    notifyListeners();
+  }
+
+  // Products No of Quantity
+  int calculateProductWithQuantity({int? quantity}) {
+    int totalProducts = 0;
+
+    if (quantity == null) {
+      totalProducts = _filteredProducts.length;
+    } else {
+      for (Product product in _allProducts) {
+        if (product.quantity != null && product.quantity == quantity) {
+          totalProducts++;
+        }
+      }
+    }
+    return totalProducts;
+  }
+
+
 }
