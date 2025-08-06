@@ -1,6 +1,6 @@
-import 'package:admin_panel/screens/variants/component/add_variants_form.dart';
-import 'package:admin_panel/screens/variants/component/variants_header.dart';
-import 'package:admin_panel/screens/variants/component/variants_list.dart';
+import 'package:admin_panel/screens/variants/components/add_variants_form.dart';
+import 'package:admin_panel/screens/variants/components/variants_header.dart';
+import 'package:admin_panel/screens/variants/components/variants_list.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

@@ -1,23 +1,22 @@
-import 'package:admin_panel/screens/brand/components/add_brand_form.dart';
-import 'package:admin_panel/screens/brand/components/brand_header.dart';
-import 'package:admin_panel/screens/brand/components/brand_list.dart';
-import 'package:admin_panel/utility/extensions.dart';
+import 'package:admin_panel/screens/dashboard/components/dashboard_header.dart';
+import 'package:admin_panel/screens/dashboard/components/order_details.dart';
+import 'package:admin_panel/screens/dashboard/components/product_list.dart';
+import 'package:admin_panel/screens/dashboard/components/product_summary_section.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../../utility/constants.dart';
+import 'components/add_product_form.dart';
 
-class BrandScreen extends StatelessWidget {
-  const BrandScreen({super.key});
-
+class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
+    return SafeArea(
       child: SingleChildScrollView(
         primary: false,
         padding: EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
-            BrandHeader(),
+            DashBoardHeader(),
             Gap(defaultPadding),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,23 +30,19 @@ class BrandScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              "My Brands",
-                              style: Theme
-                                  .of(context)
-                                  .textTheme
-                                  .titleMedium,
+                              "My Products",
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                           ),
                           ElevatedButton.icon(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(
                                 horizontal: defaultPadding * 1.5,
-                                vertical:
-                                defaultPadding,
+                                vertical: defaultPadding,
                               ),
                             ),
                             onPressed: () {
-                              showBrandForm(context,null);
+                              showAddProductForm(context, null);
                             },
                             icon: Icon(Icons.add),
                             label: Text("Add New"),
@@ -55,15 +50,22 @@ class BrandScreen extends StatelessWidget {
                           Gap(20),
                           IconButton(
                               onPressed: () {
-                                context.dataProvider.getAllBrand(showSnack: true);
+                                //TODO: should complete call getAllProduct
                               },
                               icon: Icon(Icons.refresh)),
                         ],
                       ),
                       Gap(defaultPadding),
-                      BrandListSection(),
+                      ProductSummerySection(),
+                      Gap(defaultPadding),
+                      ProductListSection(),
                     ],
                   ),
+                ),
+                SizedBox(width: defaultPadding),
+                Expanded(
+                  flex: 2,
+                  child: OrderDetailsSection(),
                 ),
               ],
             )

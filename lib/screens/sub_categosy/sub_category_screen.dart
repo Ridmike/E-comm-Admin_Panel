@@ -1,6 +1,6 @@
-import 'package:admin_panel/screens/sub_categosy/component/show_sub_category_form.dart';
-import 'package:admin_panel/screens/sub_categosy/component/sub_category_header.dart';
-import 'package:admin_panel/screens/sub_categosy/component/sub_category_list_section.dart';
+import 'package:admin_panel/screens/sub_categosy/components/show_sub_category_form.dart';
+import 'package:admin_panel/screens/sub_categosy/components/sub_category_header.dart';
+import 'package:admin_panel/screens/sub_categosy/components/sub_category_list_section.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

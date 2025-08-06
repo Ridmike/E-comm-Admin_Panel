@@ -1,4 +1,4 @@
-import 'package:admin_panel/screens/main/component/side_menu.dart';
+import 'package:admin_panel/screens/main/components/side_menu.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'provider/main_screen_provider.dart';

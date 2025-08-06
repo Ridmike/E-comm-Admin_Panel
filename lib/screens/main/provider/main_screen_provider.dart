@@ -1,5 +1,6 @@
 import 'package:admin_panel/screens/brand/brand_screen.dart';
 import 'package:admin_panel/screens/category/category_screen.dart';
+import 'package:admin_panel/screens/dashboard/dashboard_screen.dart';
 import 'package:admin_panel/screens/sub_categosy/sub_category_screen.dart';
 import 'package:admin_panel/screens/variants/variants_screen.dart';
 import 'package:admin_panel/screens/variants_type/variants_type_screen.dart';
@@ -7,11 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainScreenProvider extends ChangeNotifier {
-  Widget selectedScreen = CategoryScreen();
+  Widget selectedScreen = DashboardScreen();
 
   navigateToScreen(String screenName) {
     switch (screenName) {
       case 'Dashboard':
+        selectedScreen = DashboardScreen();
         break;
       case 'Category':
         selectedScreen = CategoryScreen();

@@ -1,4 +1,4 @@
-import 'package:admin_panel/screens/sub_categosy/component/sub_category_form.dart';
+import 'package:admin_panel/screens/sub_categosy/components/sub_category_form.dart';
 import 'package:admin_panel/utility/extensions.dart';
 import '../../../core/data/data_provider.dart';
 import '../../../models/sub_category.dart';
