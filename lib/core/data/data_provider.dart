@@ -65,6 +65,7 @@ class DataProvider extends ChangeNotifier {
     getAllBrand();
     getAllVariantTypes();
     getAllVariants();
+    getAllPosters();
   }
 
   // Get All Categories
@@ -301,6 +302,42 @@ class DataProvider extends ChangeNotifier {
         return productNameContainsKeyword ||
             categoryNameContainsKeyword ||
             subCategoryNameContainsKeyword;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  // Get All Posters
+  Future<List<Poster>> getAllPosters({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'posters');
+      if (response.isOk) {
+        ApiResponse<List<Poster>> apiResponse =
+            ApiResponse<List<Poster>>.fromJson(
+              response.body,
+              (json) =>
+                  (json as List).map((item) => Poster.fromJson(item)).toList(),
+            );
+        _allPosters = apiResponse.data ?? [];
+        _filteredPosters = List.from(_allPosters);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredPosters;
+  }
+
+  // Filter Posters
+  void filterPosters(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredPosters = List.from(_allPosters);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredPosters = _allPosters.where((poster) {
+        return (poster.posterName ?? '').toLowerCase().contains(lowerKeyword);
       }).toList();
     }
     notifyListeners();
