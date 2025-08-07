@@ -1,4 +1,5 @@
 import 'package:admin_panel/screens/brand/provider/brand_provider.dart';
+import 'package:admin_panel/screens/coupon_code/provider/coupon_code_provider.dart';
 import 'package:admin_panel/screens/dashboard/provider/dashboard_provider.dart';
 import 'package:admin_panel/screens/main/provider/main_screen_provider.dart';
 import 'package:admin_panel/screens/poster/provider/poster_provider.dart';
@@ -20,7 +21,7 @@ extension Providers on BuildContext {
   VariantsTypeProvider get variantTypeProvider => Provider.of<VariantsTypeProvider>(this, listen: false);
   VariantsProvider get variantProvider => Provider.of<VariantsProvider>(this, listen: false);
   DashBoardProvider get dashBoardProvider => Provider.of<DashBoardProvider>(this, listen: false);
-  // CouponCodeProvider get couponCodeProvider => Provider.of<CouponCodeProvider>(this, listen: false);
+  CouponCodeProvider get couponCodeProvider => Provider.of<CouponCodeProvider>(this, listen: false);
   PosterProvider get posterProvider => Provider.of<PosterProvider>(this, listen: false);
   // OrderProvider get orderProvider => Provider.of<OrderProvider>(this, listen: false);
   // NotificationProvider get notificationProvider => Provider.of<NotificationProvider>(this, listen: false);

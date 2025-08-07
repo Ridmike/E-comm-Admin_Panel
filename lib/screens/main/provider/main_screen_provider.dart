@@ -1,5 +1,6 @@
 import 'package:admin_panel/screens/brand/brand_screen.dart';
 import 'package:admin_panel/screens/category/category_screen.dart';
+import 'package:admin_panel/screens/coupon_code/coupon_code_screen.dart';
 import 'package:admin_panel/screens/dashboard/dashboard_screen.dart';
 import 'package:admin_panel/screens/poster/poster_screen.dart';
 import 'package:admin_panel/screens/sub_categosy/sub_category_screen.dart';
@@ -32,6 +33,7 @@ class MainScreenProvider extends ChangeNotifier {
         selectedScreen = VariantsScreen();
         break;
       case 'Coupon':
+        selectedScreen = CouponCodeScreen();
         break;
       case 'Poster':
         selectedScreen = PosterScreen();
