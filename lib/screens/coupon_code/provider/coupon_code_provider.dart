@@ -1,18 +1,32 @@
 import 'package:admin_panel/models/api_response.dart';
 import 'package:admin_panel/services/http_service.dart';
 import 'package:admin_panel/utility/snack_bar.dart';
-import '../../../models/coupon.dart';
-import '../../../models/product.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/data/data_provider.dart';
 import '../../../models/category.dart';
+import '../../../models/coupon.dart';
+import '../../../models/product.dart';
 import '../../../models/sub_category.dart';
 
 class CouponCodeProvider extends ChangeNotifier {
   HttpService service = HttpService();
   final DataProvider _dataProvider;
   Coupon? couponForUpdate;
+  List<Coupon> _coupons = [];
+  bool _loading = false;
+
+  List<Coupon> get coupons => _coupons;
+  bool get loading => _loading;
+
+  List<DataColumn> get columns => [
+    const DataColumn(label: Text("Coupon Name")),
+    const DataColumn(label: Text("Status")),
+    const DataColumn(label: Text("Type")),
+    const DataColumn(label: Text("Amount")),
+    const DataColumn(label: Text("Edit")),
+    const DataColumn(label: Text("Delete")),
+  ];
 
   final addCouponFormKey = GlobalKey<FormState>();
   TextEditingController couponCodeCtrl = TextEditingController();
@@ -25,7 +39,26 @@ class CouponCodeProvider extends ChangeNotifier {
   SubCategory? selectedSubCategory;
   Product? selectedProduct;
 
-  CouponCodeProvider(this._dataProvider);
+  CouponCodeProvider(this._dataProvider) {
+    getAllCoupons();
+  }
+
+  Future<void> getAllCoupons({bool showSnack = false}) async {
+    _loading = true;
+    notifyListeners();
+
+    try {
+      _coupons = await _dataProvider.getAllCoupons();
+      if (showSnack) {
+        SnackBarHelper.showSuccessSnackBar('Coupons fetched successfully');
+      }
+    } catch (e) {
+      SnackBarHelper.showErrorSnackBar('Error: ${e.toString()}');
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
+  }
 
   // Add Coupon Code
   addCoupon() async {
@@ -137,7 +170,7 @@ class CouponCodeProvider extends ChangeNotifier {
         if (apiResponse.success == true) {
           SnackBarHelper.showSuccessSnackBar(' ${apiResponse.message}');
           _dataProvider.getAllCoupons();
-        } 
+        }
       } else {
         SnackBarHelper.showErrorSnackBar(
           'Error: ${response.body?['message'] ?? response.statusText}',
