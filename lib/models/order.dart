@@ -2,7 +2,7 @@ class Order {
   ShippingAddress? shippingAddress;
   OrderTotal? orderTotal;
   String? sId;
-  UserID? userID;
+  UserID? userId;
   String? orderStatus;
   List<Items>? items;
   double? totalPrice;
@@ -16,7 +16,7 @@ class Order {
     this.shippingAddress,
     this.orderTotal,
     this.sId,
-    this.userID,
+    this.userId,
     this.orderStatus,
     this.items,
     this.totalPrice,
@@ -35,8 +35,8 @@ class Order {
         ? new OrderTotal.fromJson(json['orderTotal'])
         : null;
     sId = json['_id'];
-    userID = json['userID'] != null
-        ? new UserID.fromJson(json['userID'])
+    userId = json['userId'] != null
+        ? new UserID.fromJson(json['userId'])
         : null;
     orderStatus = json['orderStatus'];
     if (json['items'] != null) {
@@ -46,7 +46,6 @@ class Order {
       });
     }
     totalPrice = json['totalPrice']?.toDouble();
-    ;
     paymentMethod = json['paymentMethod'];
     couponCode = json['couponCode'] != null
         ? new CouponCode.fromJson(json['couponCode'])
@@ -65,8 +64,8 @@ class Order {
       data['orderTotal'] = this.orderTotal!.toJson();
     }
     data['_id'] = this.sId;
-    if (this.userID != null) {
-      data['userID'] = this.userID!.toJson();
+    if (this.userId != null) {
+      data['userId'] = this.userId!.toJson();
     }
     data['orderStatus'] = this.orderStatus;
     if (this.items != null) {
@@ -162,7 +161,8 @@ class UserID {
     return data;
   }
 
-  String get fullName => [name].where((s) => s != null && s.isNotEmpty).join(' ');
+  String get fullName =>
+      [name].where((s) => s != null && s.isNotEmpty).join(' ');
 }
 
 class Items {
