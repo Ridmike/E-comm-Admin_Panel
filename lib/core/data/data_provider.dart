@@ -67,6 +67,7 @@ class DataProvider extends ChangeNotifier {
     getAllVariants();
     getAllPosters();
     getAllCoupons();
+    getAllOrders();
   }
 
   // Get All Categories
@@ -380,7 +381,62 @@ class DataProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Get
+  // Get All Orders
+  Future<List<Order>> getAllOrders({bool showSnack = false}) async {
+    try {
+      Response response = await service.getItems(endpointUrl: 'orders');
+      if (response.isOk) {
+        ApiResponse<List<Order>> apiResponse =
+            ApiResponse<List<Order>>.fromJson(
+              response.body,
+              (json) =>
+                  (json as List).map((item) => Order.fromJson(item)).toList(),
+            );
+        _allOrders = apiResponse.data ?? [];
+        _filteredOrders = List.from(_allOrders);
+        notifyListeners();
+        if (showSnack) SnackBarHelper.showSuccessSnackBar(apiResponse.message);
+      }
+    } catch (e) {
+      if (showSnack) SnackBarHelper.showErrorSnackBar(e.toString());
+      rethrow;
+    }
+    return _filteredOrders;
+  }
+
+  // Filter Orders
+  void filterOrders(String keyword) {
+    if (keyword.isEmpty) {
+      _filteredOrders = List.from(_allOrders);
+    } else {
+      final lowerKeyword = keyword.toLowerCase();
+      _filteredOrders = _allOrders.where((order) {
+        bool nameMatch = (order.userID?.name ?? '').toLowerCase().contains(
+          lowerKeyword,
+        );
+        bool statusMatch = (order.orderStatus ?? '').toLowerCase().contains(
+          lowerKeyword,
+        );
+        return nameMatch || statusMatch;
+      }).toList();
+    }
+    notifyListeners();
+  }
+
+  // Calculate Order With Status
+  int calculateOrderWithStatus({String? status}) {
+    int totalOrders = 0;
+    if (status == null) {
+      totalOrders = _allOrders.length;
+    } else {
+      for (Order order in _allOrders) {
+        if (order.orderStatus == status) {
+          totalOrders += 1;
+        }
+      }
+    }
+    return totalOrders;
+  }
 
   // Filter Product By the Quantity
   void filterProductsByQuantity(String productQntType) {
@@ -424,6 +480,4 @@ class DataProvider extends ChangeNotifier {
     }
     return totalProducts;
   }
-
-
 }
